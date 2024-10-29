@@ -7,7 +7,7 @@ def initialize_db():
     conn = connect_db()
     cursor = conn.cursor()
 
-
+    # Create Doctors table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS patients (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
