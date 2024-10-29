@@ -8,10 +8,19 @@ def generate_bill(patient_id, total_amount):
     conn.commit()
     conn.close()
     
-def get_bills():
+def get_bills(bill_id=None):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM billing')
+    
+    if bill_id != '0':
+        cursor.execute('''
+            SELECT * FROM billing WHERE bill_id = ?
+        ''', (bill_id,))
+    else:
+        cursor.execute('''
+            SELECT * FROM billing
+        ''')
+    
     bills = cursor.fetchall()
     conn.close()
-    return bills  # Returns all bills as a list of tuples
+    return bills
