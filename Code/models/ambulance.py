@@ -8,10 +8,19 @@ def request_ambulance(patient_id, driver_name, contact):
     conn.commit()
     conn.close()
 
-def get_ambulance_requests():
+def get_ambulance_requests(ambulance_id=None):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM ambulance')
-    ambulance_requests = cursor.fetchall()
+    
+    if ambulance_id != '0':
+        cursor.execute('''
+            SELECT * FROM ambulance WHERE ambulance_id = ?
+        ''', (ambulance_id,))
+    else:
+        cursor.execute('''
+            SELECT * FROM ambulance
+        ''')
+    
+    ambulances = cursor.fetchall()
     conn.close()
-    return ambulance_requests  # Returns all ambulance requests as a list of tuples
+    return ambulances
