@@ -15,10 +15,19 @@ def book_appointment(patient_id, doctor_id, date, time):
     conn.commit()
     conn.close()
     
-def get_appointments():
+def get_appointments(appointment_id=None):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM appointments')
+    
+    if appointment_id != '0':
+        cursor.execute('''
+            SELECT * FROM appointments WHERE appointment_id = ?
+        ''', (appointment_id,))
+    else:
+        cursor.execute('''
+            SELECT * FROM appointments
+        ''')
+    
     appointments = cursor.fetchall()
     conn.close()
     return appointments
