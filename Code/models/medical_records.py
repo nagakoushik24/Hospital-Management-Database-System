@@ -15,11 +15,19 @@ def create_medical_record(patient_id, diagnosis, treatment, prescription):
     conn.close()
 
 # Function to retrieve all medical records for a given patient
-def get_medical_records():
+def get_medical_records(record_id=None):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM medical_records')
-    medical_records = cursor.fetchall()
+    
+    if record_id != '0':
+        cursor.execute('''
+            SELECT * FROM medical_records WHERE record_id = ?
+        ''', (record_id,))
+    else:
+        cursor.execute('''
+            SELECT * FROM medical_records
+        ''')
+    
+    records = cursor.fetchall()
     conn.close()
-    return medical_records  # Returns all medical records as a list of tuples
-
+    return records
